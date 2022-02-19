@@ -10,6 +10,6 @@ Uma forma de controle dos logs sem ter de reeescrever ou sair dando print para e
 #### Versões
 * **1.0** - Inicial
 * **Proxima versções:**
-    * Queba dos fluxos em casos de erros
+    * Quebra dos fluxos em casos de erros
     * Tratamento de erros
-    * Criação de num padrão 2 para o s logs.
+    * Criação de um nivel 2 para os logs.
