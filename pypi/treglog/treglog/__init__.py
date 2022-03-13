@@ -1,2 +1,1 @@
-from .tlog import *
-from .tlog_errors import *
+from .treglog import *

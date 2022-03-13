@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+treglog/__init__.py
+treglog/treglog.py
+treglog.egg-info/PKG-INFO
+treglog.egg-info/SOURCES.txt
+treglog.egg-info/dependency_links.txt
+treglog.egg-info/top_level.txt

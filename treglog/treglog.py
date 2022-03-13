@@ -1,15 +1,39 @@
 from datetime import datetime
-import tlog_errors
 
-tlog_version = '1.2'
+tlog_version = '2.0.6'
 
-class Tlog:
-    def __init__(self, path_exportFile: str, typeLog: int, credits = True, prefix = ''):
-        if typeLog not in [0,1,2,3] or type(credits) !=  bool:
-            if type(credits) !=  bool:
-                raise tlog_errors.TlogErrorInvalidTypeBool(credits, 'credits')
-            else:
-                raise tlog_errors.TlogErrorParameterValue(typeLog)
+class TlogErrorWriteFile(Exception):
+    def __init__(self, value):
+        self.value = value
+        
+    def __str__(self):
+        return f'Erro na gravação do arquivo: {self.value}.'
+    
+class TlogErrorParameterValue(Exception):
+    def __init__(self, value):
+        self.value = value
+        
+    def __str__(self):
+        return f'O valor do parametro typeLog esta incorreto.\n  Verifique a documentação em: https://github.com/tlsabara/tlog'
+    
+class TlogErrorInvalidTypeBool(Exception):
+    def __init__(self, value, name):
+        self.value = value
+        self.tipo = name
+    def __str__(self):
+        return f'O valor do parametro esta incorreto: "{self.value}":: (variavel:{self.tipo}) , não é do tipo "bool".\nVerifique a documentação em -> https://github.com/tlsabara/tlog'
+    
+class TlogErrorIncorrectUtilization(Exception):
+    def __init__(self, value, name):
+        self.value = value
+        self.tipo = name
+    def __str__(self):
+        return f'O log foi instanciado com o parameto "fullMestype = True", mas não foi informado o parametro "call" na chamada.\nEdite a função ou modifique o parametro na instancia'
+
+class Treglog:
+    def __init__(self, path_exportFile: str, typeLog: int, prefix = ''):
+        if typeLog not in [0,1,2,3]:
+                raise TlogErrorParameterValue(typeLog)
         else:
             start_time = 'Start time: {}'.format(str(datetime.now()))
             log_time = str(datetime.now())
@@ -21,7 +45,7 @@ class Tlog:
                     arquivo.write('generated with TLOG by sbk v{}\n'.format(tlog_version))
                     arquivo.close()
             except FileNotFoundError:
-                raise tlog_errors.TlogErrorWriteFile(path_try)
+                raise TlogErrorWriteFile(path_try)
             else:
                 self.time = log_time
                 self.Startime = start_time
@@ -31,9 +55,9 @@ class Tlog:
                 self.conf = typeLog
                 self.defMsg_full = 'Call: {} - Hora: {} - Mensagem: {}' 
                 self.defMsg_simple = 'Hora: {} - Mensagem: {}'
-                self.nosrc = credits
+                self.nosrc = False
             
-    def msg(self, mess, call=''):
+    def msg(self, mess, call = ''):
         mess = self._treatmentMess(mess, call)
         if self.conf == 2 :
             print(mess)
@@ -97,7 +121,7 @@ class Tlog:
                 lfile.close()
             return True
         except:
-            raise tlog_errors.TlogErrorWriteFile(self.exportFile)
+            raise TlogErrorWriteFile(self.exportFile)
 
         
     def _treatmentMess(self, mess, call):

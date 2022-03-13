@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: treglog
+Version: 2.0.6
+Summary: Um simples projeto de logs, para pequenos projetos
+Home-page: https://github.com/tlsabara/treglog/
+Author: Thiago Sabará
+Author-email: thi.sil.sab@gmail.com
+License: UNKNOWN
+Project-URL: Código fonte, https://github.com/tlsabara/treglog/blob/main/treglog/treglog.py
+Project-URL: Download, https://github.com/tlsabara/treglog/blob/main/docs/versions
+Keywords: log tlog treglog
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Internationalization
+Classifier: Topic :: Scientific/Engineering :: Physics
+License-File: LICENSE
+
+Um simples projeto de logs, para pequenos projetos. Consegue criar modos de debug para log em arquivo e em tela.
+

@@ -7,13 +7,12 @@ Uma bilbioteca simples que antes se chamava tlog agora chama-se treglog, leve pa
 
 ## Meta
 
-Uma forma de controle dos logs sem ter de reeescrever ou sair dando print para entende o que está acontecendo com o código, com apenas uma varável é póssível printar ou não a tela. Conforme a necessidade. As varáveis e prints ficam ocultos e somente são ativados se necessário. Além de exportar um arquivo de log com a timestamp.
-
+Uma forma de controle dos logs sem ter de reeescrever ou sair dando print para entender o que está acontecendo com o código, com apenas uma varável é póssível printar ou não na tela. Conforme a necessidade do dev. As varáveis e prints ficam ocultos e somente são ativados se necessário. Além de exportar um arquivo de log com a timestamp.
   
 
 ## Utilização
 
-#### **Instalação(Se tudo der certo):**
+#### **Instalação:**
 
 ~~~python
 
@@ -56,14 +55,12 @@ treglog.Treglog(path_exportFile: str, typeLog: int, prefix  =  '')
 *  **path_exportFile:** Caminho da pasta onde o arquivo deve ser salvo
 
 *  **typeLog:** Tipo de log a ser utilizado no código
-**  **0** - Log completo, dependendo do método ocorre print em tela e impressão no arquivo
-**  **1** - Log separado, dependendo do método ocorre o print ou a impressão no arquivo
-**  **2** - Log visual, ocorre apenas a impressão em tela, ref ao método.
-**  **3** - Silient Mode, não imprime no arquivo nem print em tela.
+    *  **0** - Log completo, dependendo do método ocorre print em tela e impressão no arquivo
+    *  **1** - Log separado, dependendo do método ocorre o print ou a impressão no arquivo
+    *  **2** - Log visual, ocorre apenas a impressão em tela, ref ao método.
+    *  **3** - Silient Mode, não imprime no arquivo nem print em tela.
 * **prefix:** Prefixo para o nome do arquivo de log.
 
-  
-  
 
 #### **Funções:**
 
@@ -133,9 +130,11 @@ log.printlog()
 
 #### **Versões**
 
-*  **1.0** - Inicial
-*  **1.1** - Modificações no fluxo, melhoria de tratamento e retorno ao usuário, criação do modo slient(nv 3)
-*  **2.0** - Criação do pacote PyPI, modificação completa, tratamento de erros ETC
+*  **1.0.0** - Inicial
+*  **1.1.0** - Modificações no fluxo, melhoria de tratamento e retorno ao usuário, criação do modo slient(nv 3)
+*  **2.0.0** - Criação do pacote PyPI, Primeiro pacote (13/03/2022)
+*  **2.0.1** a **2.0.5** - Correção de bugs
+*  **2.0.6** - modificação completa, tratamento de erros ETC, primeira versão completa.
 
 *  **Proxima versções:**
 
