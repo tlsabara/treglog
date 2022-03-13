@@ -1,152 +1,143 @@
-# tlog
- Minha biblioteca para controle de log pessoal
+
+# ~~Tlog~~ Treglog 
+
+Uma bilbioteca simples que antes se chamava tlog agora chama-se treglog, leve para gerar arquivos de log em txt. 
+
+> Autor: Esta é minha primeira bilbioteca, desde já peço desculpas por qualquer erro, ou algo que não tenha sido constuido seguindo as melhores praticas ou convenções. PR/Issues são extremamente bemvindas! Ex: Como lidar com arquivos enormes?
 
 ## Meta
-Uma forma de controle dos logs sem ter de reeescrever ou sair dando print para entende o que está acontecendo com o código, com apenas uma varável é póssível printar ou não a tela. Conforme a necessidade. As varáveis e print ficam ocultos e somente são ativados se necessário. Além de exportar um arquivo de log pela timestamp.
+
+Uma forma de controle dos logs sem ter de reeescrever ou sair dando print para entende o que está acontecendo com o código, com apenas uma varável é póssível printar ou não a tela. Conforme a necessidade. As varáveis e prints ficam ocultos e somente são ativados se necessário. Além de exportar um arquivo de log com a timestamp.
+
+  
 
 ## Utilização
+
+#### **Instalação(Se tudo der certo):**
+
+~~~python
+
+# modelo de instalação
+pip install treglog
+
+~~~
+
 #### **Importação:**
 ~~~python
-# modelo de importação
-from tlog import startLog
-#ou
-import tlog
-~~~
 
+# modelo de importação
+from treglog import Treglog
+#ou
+import treglog 
+
+~~~
 #### **Inicialização:**
 ~~~python
-caminho = 'C:\\Pasta_de_log'
-tipoLog = 0
-myLog = startLog(caminho,tipoLog)
+
+caminho =  'C:\\Pasta_de_log'
+tipoLog =  0
+log = Treglog(caminho,tipoLog)
 #ou
-myLog = tlog.startLog(caminho,tipoLog) 
+log = treglog.Treglog(caminho,tipoLog)
 #Dependendo do modo como foi realizada a importação
+
 ~~~
+
+  
 
 #### **Parâmetros:**
-~~~python
-tlog.startLog(path_exportFile, typeLog)
-~~~
-* **path_exportFile:** Caminho da pasta onde o arquivo deve ser salvo
-* **typeLog:** Tipo de log a ser utilizado no código
-    * **0** - Log completo, dependendo do método ocorre print em tela e impressão no arquivo
-    * **1** - Log separado, dependendo do método ocorre o print ou a impressão no arquivo
-    * **2** - Log visual, ocorre apenas a impressão em tela, ref ao método.
-    * **3** - Silient Mode, não imprime no arquivo nem print em tela.
 
+~~~python
+
+treglog.Treglog(path_exportFile: str, typeLog: int, prefix  =  '')
+
+~~~
+
+*  **path_exportFile:** Caminho da pasta onde o arquivo deve ser salvo
+
+*  **typeLog:** Tipo de log a ser utilizado no código
+**  **0** - Log completo, dependendo do método ocorre print em tela e impressão no arquivo
+**  **1** - Log separado, dependendo do método ocorre o print ou a impressão no arquivo
+**  **2** - Log visual, ocorre apenas a impressão em tela, ref ao método.
+**  **3** - Silient Mode, não imprime no arquivo nem print em tela.
+* **prefix:** Prefixo para o nome do arquivo de log.
+
+  
+  
 
 #### **Funções:**
-* **onLog(self, mess)**
-        
-    Código:
-    ~~~python
-    def onLog(self, mess):
-        mess = str(mess)
-        if self.conf >= 0 and self.conf < 2 :
-            self.filelog.append(self.defMsg.format(datetime.now(), mess))
-            exportlog(self.conf, self.exportFile, self.filelog)
-        elif self.conf == 2:
-            self.filelog.append(self.defMsg.format(datetime.now(), mess))
-            warnings.warn('A função esta sendo chamada sem o nível de log (nv: 0 ou 1).')
-        elif self.conf == 3:
-            pass
-        else:
-            warnings.warn('"onLog()": parâmetro de tipo de log errado!')
-            pass
-    ~~~
 
-    Utilização:
-    ~~~python
-    #Instanciado tlog no objeto myLog:
-    myLog.onLog('Esta mensagem não foi printada na tela mas veio para o arquivo')
-    ~~~
+*  **msg(mess, *call = ''*)**
+* Utilizada apenas para printar em tela a mensagem. Pensada para ser utilizada em debugs. Não é registrada no arquivo de log em nenhum modo.
 
-* **mdebug(self, mess)**
-        
-    Código:
-    ~~~python
-    def mdebug(self, mess):
-        mess = str(mess)
-        if self.conf == 0:
-            log_line = self.defMsg.format(datetime.now(), mess)
-            print(log_line)
-            self.filelog.append(log_line)
-            exportlog(self.conf, self.exportFile, self.filelog)
-        elif self.conf == 1: 
-            log_line = self.defMsg.format(datetime.now(), mess)
-            self.filelog.append(log_line)
-            exportlog(self.conf, self.exportFile, self.filelog)
-        elif self.conf == 2:
-            log_line = self.defMsg.format(datetime.now(), mess)
-            print(log_line)
-            self.filelog.append(log_line)
-        elif self.conf == 3:
-            pass
-        else:
-            warnings.warn('"mdebug()": parâmetro de tipo de log errado!')
-            pass
-    ~~~
+Utilização:
+~~~python
 
-    Utilização:
-    ~~~python
-    #Instanciado o tlog no objeto myLog:
-    myLog.mdebug('Esta mensagem é printada na tela e armazanada para o arquivo de log')
-    ~~~
+destPath  =  'C:\\Users\\root_main\\Documents\\logs\\log_tlog_homolog'
+logtype  =  3
+log  = Treglog(destPath, logtype, prefix= f'TESTv1-2-Tlog_LOG={logtype}')
+#Com a variável call
+log.msg(f'Mensagem de erro no log tipo = {logtype}, visivel somente no tipo 2','Com o Nome do método especificado')
+#Sem a variável call
+log.msg(f'Mensagem de erro no log tipo = {logtype}, visivel somente no tipo 2')
 
-* **msgLog(self, mess)**
-        
-    Código:
-    ~~~python
-    def msgLog(self, mess):
-        mess = str(mess)
-        if self.conf >= 0 and self.conf < 3:
-            print(mess)
-        elif self.conf == 3:
-            pass
-        else:
-            warnings.warn('"msgLog()": parâmetro de tipo de log errado!')
-            pass
-    ~~~
+~~~
 
-    Utilização:
-    ~~~python
-    #Instanciado o tlog no objeto myLog:
-    myLog.msgLog('Mensagem printada na tela, mas não vai para o arquivo')
-    ~~~
+  
 
-* **printlog(self)**
-        
-    Código:
-    ~~~python
-    def printlog(self):
-        if self.conf in [0,1,2]:
-            try:
-                print('|----------------------|')
-                for line in self.filelog:
-                    print(line)
-                print('-----| FIM DE LOG |-----')
-                print('|----------------------|')
-                self.filelog.append(self.defMsg.format(datetime.now(), " - Executado um print do log - "))
-                exportlog(self.conf,self.exportFile, self.filelog)
-            except:
-                pass
-        elif self.conf == 3:
-            pass
-        else:
-            warnings.warn('"printlog()": parâmetro de tipo de log errado!')
-    ~~~
+* **mDebug(mess, *call  =  ''*)**
+* pensada totalmente para o debug, este método é altamente influenciado pelo parametro **typeLog**.
+* Utilização:
+~~~python
 
-    Utilização:
-    ~~~python
-    #Instanciado tlog no objeto myLog:
-    myLog.printlog()
-    ~~~
+#Instanciado o tlog no objeto log:
+#Com a variável call
+log.mDebug(f'Mensagem do mLog no log tipo = {logtype}','Com nome do método')
+#Sem a variável call
+log.mDebug(f'Mensagem do mLog no log tipo = {logtype}',) 
+
+~~~
+
+  
+
+*  **mLog(mess, *call  =  ''*)**
+
+Utilização:
+~~~python
+
+#Instanciado o tlog no objeto log:
+#Com a variável call
+log.mLog(f'Mensagem do mLog no log tipo = {logtype}','Com nome do método')
+#Sem a variável call
+log.mLog(f'Mensagem do mLog no log tipo = {logtype}',) )
+
+~~~
+
+  
+
+*  **printlog()**
+*  parte destinada a printar em tela o log dos arquivos
+
+Utilização:
+
+~~~python
+
+#Instanciado o tlog no objeto log:
+log.printlog()
+
+~~~
+
+  
 
 --
+
 #### **Versões**
-* **1.0** - Inicial
-* **1.1** - Modificações no fluxo, melhoria de tratamento e retorno ao usuário, criação do modo slient(nv 3)
-* **Proxima versções:**
-    * Quebra dos fluxos em casos de erros
-    * Tratamento de erros
-    * Criação de um nivel 2 para os logs.
+
+*  **1.0** - Inicial
+*  **1.1** - Modificações no fluxo, melhoria de tratamento e retorno ao usuário, criação do modo slient(nv 3)
+*  **2.0** - Criação do pacote PyPI, modificação completa, tratamento de erros ETC
+
+*  **Proxima versções:**
+
+* Tratamento de arquivos grandes. (concorrencia talvez? (kkkkk))
+* Quebra em arquivos por dia. (O que ja soluciona parte do problema de arquivos grandes)

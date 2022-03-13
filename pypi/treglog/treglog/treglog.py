@@ -4,7 +4,7 @@ import tlog_errors
 tlog_version = '1.2'
 
 class Treglog:
-    def __init__(self, path_exportFile: str, typeLog: int, credits = True, prefix = ''):
+    def __init__(self, path_exportFile: str, typeLog: int, prefix = ''):
         if typeLog not in [0,1,2,3] or type(credits) !=  bool:
             if type(credits) !=  bool:
                 raise tlog_errors.TlogErrorInvalidTypeBool(credits, 'credits')
@@ -31,9 +31,9 @@ class Treglog:
                 self.conf = typeLog
                 self.defMsg_full = 'Call: {} - Hora: {} - Mensagem: {}' 
                 self.defMsg_simple = 'Hora: {} - Mensagem: {}'
-                self.nosrc = credits
+                self.nosrc = False
             
-    def msg(self, mess, call=''):
+    def msg(self, mess, call = ''):
         mess = self._treatmentMess(mess, call)
         if self.conf == 2 :
             print(mess)
