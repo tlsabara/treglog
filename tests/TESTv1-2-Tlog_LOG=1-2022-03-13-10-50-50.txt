@@ -1,0 +1,10 @@
+---| ARQUIVO DE LOG |---
+Start time: 2022-03-13 10:50:50.761907
+Call: Com nome do método - Hora: 2022-03-13 10:50:50.762909 - Mensagem: Mensagem do mLog no log tipo = 1
+Hora: 2022-03-13 10:50:50.762909 - Mensagem: Mensagem do mLog no log tipo = 1
+Call: Com nome do método - Hora: 2022-03-13 10:50:50.763907 - Mensagem: Mensagem do mDebug no log tipo = 1
+Hora: 2022-03-13 10:50:50.763907 - Mensagem: Mensagem do mDebug no log tipo = 1
+Hora: 2022-03-13 10:50:50.764907 - Mensagem:  - Executado um print do log - 
+Ultima execução: 2022-03-13 10:50:50.764907
+-----| FIM DE LOG |-----
+generated with TLOG by sbk v1.2
