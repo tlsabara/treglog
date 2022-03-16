@@ -97,8 +97,8 @@ log.mDebug(f'Mensagem do mLog no log tipo = {logtype}',)
 
   
 
-*  **mLog(mess, *call  =  ''*)**
-
+* **mLog(mess, *call  =  ''*)**
+* Nunca printa em tela. Envia apenas para o arquivo. Para ver os registros realizados com desta função em tela, somente utilizando a função **printlog()**.
 Utilização:
 ~~~python
 
