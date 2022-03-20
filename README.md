@@ -3,7 +3,7 @@
 
 Uma bilbioteca de python simples que antes se chamava tlog agora chama-se treglog, leve para gerar arquivos de log em txt. 
 
-> Autor: Esta é minha primeira bilbioteca, desde já peço desculpas por qualquer erro, ou algo que não tenha sido constuido seguindo as melhores praticas ou convenções. PR/Issues são extremamente bem vindas! Ex: Como lidar com arquivos enormes?
+> Autor: Esta é minha primeira bilbioteca, desde já peço desculpas por qualquer erro, ou algo que não foi constuido seguindo as melhores praticas ou convenções. PR/Issues são extremamente bem vindas! Ex: Como lidar com arquivos enormes?
 
 ## Meta
 
