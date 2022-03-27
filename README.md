@@ -77,7 +77,7 @@ Utilização:
 
 destPath  =  'C:\\Users\\root_main\\Documents\\logs\\log_tlog_homolog'
 logtype  =  3
-log  = Treglog(destPath, logtype, prefix= f'TESTv1-2-Tlog_LOG={logtype}')
+log  = Tlog(destPath, logtype, prefix= f'TESTv1-2-Tlog_LOG={logtype}')
 #Com a variável call
 log.msg(f'Mensagem de erro no log tipo = {logtype}, visivel somente no tipo 2','Com o Nome do método especificado')
 #Sem a variável call
