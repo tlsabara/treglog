@@ -25,7 +25,7 @@ pip install treglog
 ~~~python
 
 # modelo de importação
-from treglog import Treglog
+from treglog import Tlog
 #ou
 import treglog 
 
@@ -35,9 +35,9 @@ import treglog
 
 caminho =  'C:\\Pasta_de_log'
 tipoLog =  0
-log = Treglog(caminho,tipoLog)
+log = Tlog(caminho,tipoLog)
 #ou
-log = treglog.Treglog(caminho,tipoLog)
+log = treglog.Tlog(caminho,tipoLog)
 #Dependendo do modo como foi realizada a importação
 
 ~~~
@@ -48,19 +48,24 @@ log = treglog.Treglog(caminho,tipoLog)
 
 ~~~python
 
-treglog.Treglog(path_exportFile: str, typeLog: int, prefix  =  '')
+treglog.Tlog(path_exportFile='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False)
 
 ~~~
 
-*  **path_exportFile:** Caminho da pasta onde o arquivo deve ser salvo
+*  **path_exportFile:** Caminho da pasta onde o arquivo deve ser salvo por defaul vai salvar no  Documents/logs/
 
-*  **typeLog:** Tipo de log a ser utilizado no código
+*  **typeLog:** Tipo de log a ser utilizado no código (padrão: 0)
     *  **0** - Log completo, dependendo do método ocorre print em tela e impressão no arquivo
     *  **1** - Log separado, dependendo do método ocorre o print ou a impressão no arquivo
     *  **2** - Log visual, ocorre apenas a impressão em tela, ref ao método.
     *  **3** - Silient Mode, não imprime no arquivo nem print em tela.
 * **prefix:** Prefixo para o nome do arquivo de log.
 
+* **prefix:** prefixo para a estrutura de pastas e nome do arquivo.(padrão:'no_prefix')
+
+* **limit_lines:** numero de linhas em cada arquivo.(padrão:1000 linhas)
+
+* **force_mode:** modo onde o programa vai forcar a criação de pasta caso ocorra algum errro.
 
 #### **Funções:**
 
@@ -135,8 +140,9 @@ log.printlog()
 *  **2.0.0** - Criação do pacote PyPI, Primeiro pacote (13/03/2022)
 *  **2.0.1** a **2.0.5** - Correção de bugs
 *  **2.0.6** - modificação completa, tratamento de erros ETC, primeira versão completa.
+*  **2.1.0** - bugfixes, tratamento para funcionar no lunux, limite de linhas, tratamento para caminhos de pastas, modificação nas strings de log e de arquivo
 
 *  **Proxima versções:**
 
-* Tratamento de arquivos grandes. (concorrencia talvez? (kkkkk))
-* Quebra em arquivos por dia. (O que ja soluciona parte do problema de arquivos grandes)
+* modo de apagar o log.
+* gerenciar o historico em estrutura de pasta exec > ano > mes > dia > hora
