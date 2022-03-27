@@ -26,7 +26,7 @@ pip install treglog
 
 # modelo de importação
 from treglog import Tlog
-#ou
+# ou
 import treglog 
 
 ~~~
@@ -36,9 +36,9 @@ import treglog
 caminho =  'C:\\Pasta_de_log'
 tipoLog =  0
 log = Tlog(caminho,tipoLog)
-#ou
+# ou
 log = treglog.Tlog(caminho,tipoLog)
-#Dependendo do modo como foi realizada a importação
+# Dependendo do modo como foi realizada a importação
 
 ~~~
 
@@ -78,9 +78,9 @@ Utilização:
 destPath  =  'C:\\Users\\root_main\\Documents\\logs\\log_tlog_homolog'
 logtype  =  3
 log  = Tlog(destPath, logtype, prefix= f'TESTv1-2-Tlog_LOG={logtype}')
-#Com a variável call
+# Com a variável call
 log.msg(f'Mensagem de erro no log tipo = {logtype}, visivel somente no tipo 2','Com o Nome do método especificado')
-#Sem a variável call
+# Sem a variável call
 log.msg(f'Mensagem de erro no log tipo = {logtype}, visivel somente no tipo 2')
 
 ~~~
@@ -92,10 +92,10 @@ log.msg(f'Mensagem de erro no log tipo = {logtype}, visivel somente no tipo 2')
 * Utilização:
 ~~~python
 
-#Instanciado o tlog no objeto log:
-#Com a variável call
+# Instanciado o tlog no objeto log:
+# Com a variável call
 log.mDebug(f'Mensagem do mLog no log tipo = {logtype}','Com nome do método')
-#Sem a variável call
+# Sem a variável call
 log.mDebug(f'Mensagem do mLog no log tipo = {logtype}',) 
 
 ~~~
@@ -107,10 +107,10 @@ log.mDebug(f'Mensagem do mLog no log tipo = {logtype}',)
 Utilização:
 ~~~python
 
-#Instanciado o tlog no objeto log:
-#Com a variável call
+# Instanciado o tlog no objeto log:
+# Com a variável call
 log.mLog(f'Mensagem do mLog no log tipo = {logtype}','Com nome do método')
-#Sem a variável call
+# Sem a variável call
 log.mLog(f'Mensagem do mLog no log tipo = {logtype}',) )
 
 ~~~
@@ -124,8 +124,11 @@ Utilização:
 
 ~~~python
 
-#Instanciado o tlog no objeto log:
+#print o tlog no objeto log recente.
 log.printlog()
+
+# Printa completament o log.. 
+log.printlog(True)
 
 ~~~
 
