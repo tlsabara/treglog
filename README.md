@@ -148,4 +148,6 @@ log.printlog(True)
 *  **Proxima versções:**
 
 * modo de apagar o log.
+* utilizacao de sqlite
+* refactor completo
 * gerenciar o historico em estrutura de pasta exec > ano > mes > dia > hora
