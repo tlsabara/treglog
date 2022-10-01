@@ -1,42 +1,78 @@
-from Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
 from datetime import datetime
 import os
 
-tlog_version = '3.0.0'
+tlog_version = '2.1.0'
 
+class TlogErrorWriteFile(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return f'Erro na gravação do arquivo: {self.value}.'
+
+class TlogErrorWriteFileOrForce(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return f'Erro na gravação do arquivo: {self.value}. Utilize "force_mode=True" na instancia do objeto'
+    
+class TlogErrorParameterValue(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return 'O valor do parametro typeLog esta incorreto.\n  Verifique a documentação em: https://github.com/tlsabara/tlog'
+    
+class TlogErrorInvalidTypeBool(Exception):
+    def __init__(self, value, name):
+        self.value = value
+        self.tipo = name
+    def __str__(self):
+        return f'O valor do parametro esta incorreto: "{self.value}":: (variavel:{self.tipo}) , não é do tipo "bool".\nVerifique a documentação em -> https://github.com/tlsabara/tlog'
+    
+class TlogErrorIncorrectUtilization(Exception):
+    def __init__(self, value, name):
+        self.value = value
+        self.tipo = name
+    def __str__(self):
+        return 'O log foi instanciado com o parameto "fullMestype = True", mas não foi informado o parametro "call" na chamada.\nEdite a função ou modifique o parametro na instancia'
+
+class TlogErrorPathNotExistsOrInacessible(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return f'O caminho de pasta passado esta inacessível ou não existe.\n {self.value}'
 
 class Tlog:
-    def __init__(self, path_export_file='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False):
+    def __init__(self, path_exportFile='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False):
         id_exec = 1
         
-        if path_export_file == '':
+        if path_exportFile == '':
             if os.name == 'nt':
-                path_export_file = f'C:\\Users\\{os.getlogin()}\\Documents\logs'
+                path_exportFile = f'C:\\Users\\{os.getlogin()}\\Documents\logs'
             if os.name == 'posix':
-                path_export_file = f'/home/{os.getlogin()}/Documents/logs'
+                path_exportFile = f'/home/{os.getlogin()}/Documents/logs'
             
         if os.name == 'nt':
             try:
-                os.makedirs(f'{path_export_file}\\{prefix}')
+                os.makedirs(f'{path_exportFile}\\{prefix}')
             except FileExistsError:
                 pass
             except OSError:
-                raise TregFileErrors.TlogErrorPathNotExistsOrInacessible(path_export_file)
+                raise TlogErrorPathNotExistsOrInacessible(path_exportFile)
             finally:
-                path_export_file_full = f'{path_export_file}\\{prefix}\\'
+                path_exportFile_full = f'{path_exportFile}\\{prefix}\\'
         else:
             try:
-                os.makedirs(f'{path_export_file}/{prefix}')
+                os.makedirs(f'{path_exportFile}/{prefix}')
             except FileExistsError:
                 pass
             except OSError:
-                raise TregFileErrors.TlogErrorPathNotExistsOrInacessible(path_export_file)
+                raise TlogErrorPathNotExistsOrInacessible(path_exportFile)
             finally:
-                path_export_file_full = f'{path_export_file}/{prefix}/'
+                path_exportFile_full = f'{path_exportFile}/{prefix}/'
                     
         alt_list = list()
-        for path in os.listdir(path_export_file_full):
-                if os.path.isfile(os.path.join(path_export_file_full, path)):
+        for path in os.listdir(path_exportFile_full):
+                if os.path.isfile(os.path.join(path_exportFile_full, path)):
                     if path[:len(prefix)+1] == str(prefix+'@'):
                         p = path[:path.find('__')]
                         if p not in alt_list:
@@ -48,12 +84,12 @@ class Tlog:
             id_exec += 1
         
         if typeLog not in [0,1,2,3]:
-            raise TregGeneralErrors.TlogErrorParameterValue(typeLog)
+            raise TlogErrorParameterValue(typeLog)
         else:
             start_time = f'id:{id_exec} Start time: {str(datetime.now())}'
             log_time = str(datetime.now())
             prefix_file = prefix +'@'+ str(id_exec)
-            path_try = path_export_file_full + prefix_file + '__' + log_time[:10] +'_' + log_time[11:19].replace(':','_') + '.txt'
+            path_try = path_exportFile_full + prefix_file + '__' + log_time[:10] +'_' + log_time[11:19].replace(':','_') + '.txt'
             try:
                 if typeLog == 1 or typeLog == 0:
                     arquivo = open(str(path_try),'w')
@@ -61,7 +97,7 @@ class Tlog:
                     arquivo.write('generated with TLOG by sbk v{}\n'.format(tlog_version))
                     arquivo.close()
             except FileNotFoundError:
-                raise TregFileErrors.TlogErrorWriteFile(path_try)
+                raise TlogErrorWriteFile(path_try)
             else:
                 self.limit_lines = limit_lines
                 self.time = log_time
@@ -73,7 +109,7 @@ class Tlog:
                 self.defMsg_full = 'Hora: {} - Mensagem: [call: {}] - {}' 
                 self.defMsg_simple = 'Hora: {} - Mensagem: {}'
                 self.nosrc = False
-                self.path_export_file_full = path_export_file_full
+                self.path_exportFile_full = path_exportFile_full
                 self.hist_filelog = []
                 self.hist_filelog_size = 0
                 self.force_mode = force_mode
@@ -86,7 +122,7 @@ class Tlog:
                 cl +=1
             self.hist_filelog_size += cl
             self.filelog = [self.Startime]
-            self.exportFile = self.path_export_file_full + self.prefix + '__' + self.time[:10] +'_' + self.time[11:19].replace(':','_') + f'_l_{self.hist_filelog_size}.txt'
+            self.exportFile = self.path_exportFile_full + self.prefix + '__' + self.time[:10] +'_' + self.time[11:19].replace(':','_') + f'_l_{self.hist_filelog_size}.txt'
         else:
             pass
         
@@ -160,7 +196,7 @@ class Tlog:
             return True
         except FileNotFoundError:
             if self.force_mode:
-                os.makedirs(self.path_export_file_full)
+                os.makedirs(self.path_exportFile_full)
                 if self.conf == 1 or self.conf == 0:
                     lfile = open(str(self.exportFile),'w')
                     lfile.write('---| ARQUIVO DE LOG |---\n')
@@ -174,7 +210,7 @@ class Tlog:
                     lfile.close()
                     self._verify_len_log()
                 return True
-            raise TregFileErrors.TlogErrorWriteFileOrForce(self.exportFile)
+            raise TlogErrorWriteFileOrForce(self.exportFile)
         except FileExistsError:
             # estranho
             if self.conf == 1 or self.conf == 0:
