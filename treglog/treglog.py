@@ -1,6 +1,8 @@
-from Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
+from abc import ABC, abstractmethod
 from datetime import datetime
 import os
+
+from Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
 
 tlog_version = '3.0.0'
 
