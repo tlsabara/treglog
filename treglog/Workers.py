@@ -8,7 +8,7 @@ from Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
 
 
 class AbsWorker(ABC):
-    def __init__(self, kwargs: dict):
+    def __init__(self, **kwargs):
         filename = kwargs.get('filename')
         path = kwargs.get('path')
 
@@ -56,7 +56,7 @@ class AbsWorker(ABC):
 
 class TextWorker(AbsWorker):
     def __init__(self, **kwargs):
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
         full_path = str(self.__path) + str(self.__filename)
         self.str_message_simple = 'Time:{} | Message{} | Type:{}\n'
         self.str_message_full = 'Time:{} | Message{} | Type:{} | Call: {}\n'
@@ -113,4 +113,15 @@ class TextWorker(AbsWorker):
             print('Erro Na croicação do arquivo.', e)
 
     def read_log(self, **kargs):
-        ...
+        try:
+            with open(self.full_path, 'r') as file:
+                lines = file.readlines()
+                file.close()
+                return  lines
+        except Exception as e:
+            print('Erro Na croicação do arquivo.', e)
+
+    class DBWorker(AbsWorker):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            # Construir o worker de BD
