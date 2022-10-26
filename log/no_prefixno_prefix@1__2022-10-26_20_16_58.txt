@@ -1,0 +1,2 @@
+---| teste log |---
+generated with TLOG by sbk v3.0.0

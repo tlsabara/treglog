@@ -1,51 +1,60 @@
-
+from pathlib import Path
 from datetime import datetime
 import os
-
 from .Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
 from .Base.Interfaces import InterfaceTlog
-from .Base.Decorators import tlog_decorator, tdebug_decorator
+
 
 TLOG_VERSION = '3.0.0'
 
 
 class TlogFile(InterfaceTlog):
-    def __init__(self, path_export_file='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False):  # rever assinatura
+    ACCEPTED_KEYWORDS_TLOG = [
+        'path_export',
+        'prefix',
+        'file_limit_lines'
+    ]
 
+    def __init__(self, **kwargs):  
+        for k, v in kwargs.items():
+            if not k in self.ACCEPTED_KEYWORDS and not k in self.ACCEPTED_KEYWORDS_TLOG:
+                print(k)
+                raise TregGeneralErrors.TlogErrorParameterValue(
+                    f'O parâmetro {k}(valor: {v}) não é aceito'
+                )
+        super().__init__(**kwargs)
+        # rever assinatura
+        # path_export_file='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False
         #rever muito
         #rever muito
         #rever muito
         #rever muito
+
+
+        path_export = kwargs.get('path_export')
+        typeLog=0
+        prefix = 'no_prefix'
+        limit_lines = 1000
+        force_mode=False
         
-
-
         id_exec = 1
         
-        if path_export_file == '':
-            if os.name == 'nt':
-                path_export_file = ''  # f'C:\\Users\\{os.getlogin()}\\Documents\logs'
-            if os.name == 'posix':
-                path_export_file = f'~/Documents/logs'
-            
-        if os.name == 'nt':
+        if not path_export:
             try:
-                os.makedirs(f'{path_export_file}\\{prefix}')
-            except FileExistsError:
-                pass
-            except OSError:
-                raise TregFileErrors.TlogErrorPathNotExistsOrInacessible(path_export_file)
-            finally:
-                path_export_file_full = f'{path_export_file}\\{prefix}\\'
+                Path(str(Path.cwd()), 'log', prefix).mkdir(parents=True, exist_ok=True)
+                path_export_file_full = Path(str(Path.cwd()), 'log', prefix)
+            except Exception as e:
+                raise  TregFileErrors.TlogErrorPathNotExistsOrInacessible(
+                    'Erro na criação do arquivo.'
+                )
         else:
             try:
-                os.makedirs(f'{path_export_file}/{prefix}')
-            except FileExistsError:
-                pass
-            except OSError:
-                raise TregFileErrors.TlogErrorPathNotExistsOrInacessible(path_export_file)
-            finally:
-                path_export_file_full = f'{path_export_file}/{prefix}/'
-                    
+                Path(str(path_export), 'log', prefix).mkdir(parents=True, exist_ok=True)
+            except Exception as e:
+                raise  TregFileErrors.TlogErrorPathNotExistsOrInacessible(
+                    'Erro na criação do arquivo.'
+                )
+
         alt_list = list()
         for path in os.listdir(path_export_file_full):
                 if os.path.isfile(os.path.join(path_export_file_full, path)):
@@ -65,7 +74,7 @@ class TlogFile(InterfaceTlog):
             start_time = f'id:{id_exec} Start time: {str(datetime.now())}'
             log_time = str(datetime.now())
             prefix_file = prefix +'@'+ str(id_exec)
-            path_try = path_export_file_full + prefix_file + '__' + log_time[:10] +'_' + log_time[11:19].replace(':','_') + '.txt'
+            path_try = str(path_export_file_full) + prefix_file + '__' + log_time[:10] +'_' + log_time[11:19].replace(':','_') + '.txt'
             try:
                 if typeLog == 1 or typeLog == 0:
                     arquivo = open(str(path_try),'w')
@@ -128,7 +137,7 @@ class TlogFile(InterfaceTlog):
                         lfile.write(line)
                         lfile.write('\n')
                     lfile.write('Ultima execução: {}'.format(str(datetime.now())))
-                    lfile.write('\n')
+                    lfile.write('\n')               
                     lfile.write('-----| FIM DE LOG |-----\n')
                     if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(TLOG_VERSION))
                     lfile.close()
@@ -150,14 +159,15 @@ class TlogFile(InterfaceTlog):
                 lfile.close()
                 self._verify_len_log()
 
-    def _treatmentMess(self, mess, call):
-        return super()._treatmentMess(mess, call)
+    def _treatment_message(self, mess, call):
+        return super()._treatment_message(mess, call)
 
-    def buffer_log(self) -> [list, dict]:
+    @property
+    def buffer_log(self):
         return super().buffer_log
 
     @property
-    def full_log(self) -> [list, dict]:
+    def full_log(self):
         return super().full_log
     
     def m_debug(self, mess: str, call: str = '') -> None:
@@ -165,10 +175,31 @@ class TlogFile(InterfaceTlog):
 
     def m_log(self, mess: str, call: str = ''):
         return super().m_log(mess, call)
+
+
 class TlogDB(InterfaceTlog):
     """
     Classe para utilziar o treglog com banco de dados.
     """
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, **kwargs):  
+        super().__init__(**kwargs)
 
+    def m_debug(self, mess: str, call: str = '') -> None:
+        return super().m_debug(mess, call)
+    
+    def m_log(self, mess: str, call: str = ''):
+        return super().m_log(mess, call)
+
+    @property
+    def buffer_log(self):
+        return super().buffer_log
+
+    @property
+    def full_log(self):
+        return super().full_log
+
+    def save_log(self) -> None:
+        return super().save_log()
+
+    def _treatment_message(self, mess, call):
+        return super()._treatment_message(mess, call)

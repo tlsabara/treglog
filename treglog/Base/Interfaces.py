@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from uuid import uuid4, uuid5
 from ..Errors import TregGeneralErrors
 
 
@@ -14,15 +15,24 @@ class InterfaceTlog(ABC):
     """
     defautl_msg_full = 'Time: {} - Message: [call: {}] - {}' 
     default_msg_simple = 'Time: {} - Message: {}'
-    ACCEPTED_MODES = ('d', 's', 'v')
+    ACCEPTED_MODES = ('d', 's', 'v')  # d=debug/s=simple/v=verbose
+    ACCEPTED_KEYWORDS = [
+        'mode_log',
+        'forced_replace',
+        'log_name'
+    ]
 
-
-    def __init__(self, mode_log='s', forced_replace=False, **kwargs) -> None:
+    def __init__(self, mode_log='s', forced_replace=False, log_name=None,  **kwargs) -> None:
         if not mode_log in self.ACCEPTED_MODES:
             raise TregGeneralErrors.TlogErrorParameterValue(
                 f'Parâmetro "mdoe_log" incorreto.\nSão aceitos apenas os valores: {self.ACCEPTED_MODES}.'
             )
+        
+        self._id_exec = uuid4()
+        self.log_name = 'Tlog' if log_name == None else log_name
 
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__} (name = {self.log_name}, id={self._id_exec})'
 
     def show_log(self, full: bool=False) -> None:
         if self.conf in [0,1,2]:
@@ -48,24 +58,10 @@ class InterfaceTlog(ABC):
     def full_log(self) -> [list, dict]:
         pass
 
-
-    @full_log.setter
-    def full_log(self, value: any) -> None:
-        raise TregGeneralErrors.TlogErrorIncorrectUtilization(
-            'O atributo "full_log" não pode receber nenhum valor.'
-        )
-
     @property
     @abstractmethod
     def buffer_log(self) -> [list, dict]:
         pass
-
-
-    @buffer_log.setter
-    def buffer_log(self, value: any) -> None:
-        raise TregGeneralErrors.TlogErrorIncorrectUtilization(
-            'O atributo "buffer_log" não pode receber nenhum valor.'
-        )
 
     @abstractmethod
     def m_log(self, mess: str, call: str=''):
@@ -76,7 +72,7 @@ class InterfaceTlog(ABC):
         pass
         
     @abstractmethod
-    def _treatmentMess(self, mess, call):
+    def _treatment_message(self, mess, call):
         pass
 
     @abstractmethod
