@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 import os
+import sqlite3
 
 # Local Imports
 from Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
@@ -124,4 +125,9 @@ class TextWorker(AbsWorker):
     class DBWorker(AbsWorker):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            # Construir o worker de BD
+
+            self.conn = sqlite3.connect(self.full_path)
+            self.cursor = self.conn.cursor()
+
+            if kwargs.get('')
+

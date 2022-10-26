@@ -1,23 +1,24 @@
+from re import S
+
+
 class TregFileErrors:
     """
     Uma classe destinada para os erros relacionados a arquivos
     """
     class TlogErrorWriteFile(Exception):
+        """
+        Exceções para casos onde o arquivo não pode ser gravado.
+        """
         def __init__(self, value):
             self.value = value
 
         def __str__(self):
             return f'Erro na gravação do arquivo: {self.value}.'
 
-    class TlogErrorWriteFileOrForce(Exception):
-        # todo Pra que essa classe?
-        def __init__(self, value):
-            self.value = value
-
-        def __str__(self):
-            return f'Erro na gravação do arquivo: {self.value}. Utilize "force_mode=True" na instancia do objeto'
-
     class TlogErrorPathNotExistsOrInacessible(Exception):
+        """
+        Exceções para casos onde o caminho do arquivo não existe.
+        """
         def __init__(self, value):
             self.value = value
 
@@ -26,12 +27,82 @@ class TregFileErrors:
 
 
 class TregDBErrors:
-    ...
+    """
+    Classe para erros relacionados a utilização do banco de dados.
+    """
+    class TlogErrorServerUnrearcheble(Exception):
+        """
+        Erro para casos onde o servidor não foi encontrado(DNS).
+        """
+        def __init__(self, value):
+            self.value = value
 
+        def __str__(self):
+            return f'{self.value}'
+
+    class TlogErrorInvalidResponse(Exception):
+        """
+        Erro para casos onde o servidor responde de forma incorreta
+        """
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f'{self.value}'
+
+    class TlogErrorNoPermited(Exception):
+        """
+        Erros relacionados a permissão no banco de dados
+        """
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f'{self.value}'
+
+    class TlogErrorDatabaseNotFound(Exception):
+        """
+        Erro para casos onde o database não é localizado.
+        """
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f'{self.value}'
+
+    class TlogErrorTableNotFound(Exception):
+        """
+        Erro para os casos onde a tabela não foi encontrado no banco de dados acessado.
+        """
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f'{self.value}'
+
+    class TlogErrorSQLDataTypeWrong(Exception):
+        """
+        Erros onde o tipo de dado a ser inserido não é permitido pela coluna no banco de dados.
+        """
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f'{self.value}'
+
+    class TlogErrorServerTimeout(Exception):
+        """
+        Erros onde o servidor exede o timeout configurado.
+        """
+        def __init__(self, value):
+            self.value = value
+
+        def __str__(self):
+            return f'{self.value}'
 
 class TregGeneralErrors:
     """
-    Para erros relacionados a utilização do módulo.
+    Para erros relacionados a utilização da Lib.
     """
     class TlogErrorParameterValue(Exception):
         def __init__(self, value):
