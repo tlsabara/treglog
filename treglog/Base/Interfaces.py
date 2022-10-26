@@ -43,8 +43,8 @@ class InterfaceTlog(ABC):
         else:
             pass  #wtf????????
     
-    @abstractmethod
     @property
+    @abstractmethod
     def full_log(self) -> [list, dict]:
         pass
 
@@ -55,8 +55,8 @@ class InterfaceTlog(ABC):
             'O atributo "full_log" não pode receber nenhum valor.'
         )
 
-    @abstractmethod
     @property
+    @abstractmethod
     def buffer_log(self) -> [list, dict]:
         pass
 

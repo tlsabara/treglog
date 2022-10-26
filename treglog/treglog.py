@@ -1,16 +1,12 @@
 
 from datetime import datetime
-from http.client import ACCEPTED
-import imp
 import os
-from turtle import st
 
 from .Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
 from .Base.Interfaces import InterfaceTlog
 from .Base.Decorators import tlog_decorator, tdebug_decorator
 
 TLOG_VERSION = '3.0.0'
-
 
 
 class TlogFile(InterfaceTlog):
@@ -27,7 +23,7 @@ class TlogFile(InterfaceTlog):
         
         if path_export_file == '':
             if os.name == 'nt':
-                path_export_file = f'C:\\Users\\{os.getlogin()}\\Documents\logs'
+                path_export_file = ''  # f'C:\\Users\\{os.getlogin()}\\Documents\logs'
             if os.name == 'posix':
                 path_export_file = f'~/Documents/logs'
             
@@ -74,7 +70,7 @@ class TlogFile(InterfaceTlog):
                 if typeLog == 1 or typeLog == 0:
                     arquivo = open(str(path_try),'w')
                     arquivo.write('---| teste log |---\n')
-                    arquivo.write('generated with TLOG by sbk v{}\n'.format(tlog_version))
+                    arquivo.write('generated with TLOG by sbk v{}\n'.format(TLOG_VERSION))
                     arquivo.close()
             except FileNotFoundError:
                 raise TregFileErrors.TlogErrorWriteFile(path_try)
@@ -118,7 +114,7 @@ class TlogFile(InterfaceTlog):
                 lfile.write('Ultima execução: {}'.format(str(datetime.now())))
                 lfile.write('\n')
                 lfile.write('-----| FIM DE LOG |-----\n')
-                if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(tlog_version))
+                if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(TLOG_VERSION))
                 lfile.close()
                 self._verify_len_log()
             return True
@@ -134,7 +130,7 @@ class TlogFile(InterfaceTlog):
                     lfile.write('Ultima execução: {}'.format(str(datetime.now())))
                     lfile.write('\n')
                     lfile.write('-----| FIM DE LOG |-----\n')
-                    if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(tlog_version))
+                    if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(TLOG_VERSION))
                     lfile.close()
                     self._verify_len_log()
                 return True
@@ -150,11 +146,25 @@ class TlogFile(InterfaceTlog):
                 lfile.write('Ultima execução: {}'.format(str(datetime.now())))
                 lfile.write('\n')
                 lfile.write('-----| FIM DE LOG |-----\n')
-                if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(tlog_version))
+                if self.nosrc == True: lfile.write('generated with TLOG by sbk v{}\n'.format(TLOG_VERSION))
                 lfile.close()
                 self._verify_len_log()
 
-            
+    def _treatmentMess(self, mess, call):
+        return super()._treatmentMess(mess, call)
+
+    def buffer_log(self) -> [list, dict]:
+        return super().buffer_log
+
+    @property
+    def full_log(self) -> [list, dict]:
+        return super().full_log
+    
+    def m_debug(self, mess: str, call: str = '') -> None:
+        return super().m_debug(mess, call)
+
+    def m_log(self, mess: str, call: str = ''):
+        return super().m_log(mess, call)
 class TlogDB(InterfaceTlog):
     """
     Classe para utilziar o treglog com banco de dados.
