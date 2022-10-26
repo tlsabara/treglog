@@ -1,21 +1,35 @@
-from abc import ABC, abstractmethod
+
 from datetime import datetime
+from http.client import ACCEPTED
+import imp
 import os
+from turtle import st
 
-from Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
+from .Errors import TregFileErrors, TregGeneralErrors, TregDBErrors
+from .Base.Interfaces import InterfaceTlog
+from .Base.Decorators import tlog_decorator, tdebug_decorator
 
-tlog_version = '3.0.0'
+TLOG_VERSION = '3.0.0'
 
 
-class Tlog:
-    def __init__(self, path_export_file='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False):
+
+class TlogFile(InterfaceTlog):
+    def __init__(self, path_export_file='', typeLog=0, prefix = 'no_prefix', limit_lines = 1000, force_mode=False):  # rever assinatura
+
+        #rever muito
+        #rever muito
+        #rever muito
+        #rever muito
+        
+
+
         id_exec = 1
         
         if path_export_file == '':
             if os.name == 'nt':
                 path_export_file = f'C:\\Users\\{os.getlogin()}\\Documents\logs'
             if os.name == 'posix':
-                path_export_file = f'/home/{os.getlogin()}/Documents/logs'
+                path_export_file = f'~/Documents/logs'
             
         if os.name == 'nt':
             try:
@@ -92,60 +106,8 @@ class Tlog:
         else:
             pass
         
-    def msg(self, mess, call = ''):
-        mess = self._treatmentMess(mess, call)
-        if self.conf == 2 :
-            print(mess)
-        else:
-            pass
 
-    def mLog(self, mess, call = ''):
-        mess = self._treatmentMess(mess, call)
-            
-        if self.conf >= 0 and self.conf < 2 :
-            self.filelog.append(mess)
-            self.exportlog()
-        elif self.conf == 2: 
-            self.filelog.append(mess)
-        else:
-            pass
-
-    def mDebug(self, mess, call = ''):
-        mess = self._treatmentMess(mess, call)
-        
-        if self.conf == 0:
-            print(mess)
-            self.filelog.append(mess)
-            self.exportlog()
-        elif self.conf == 1: 
-            self.filelog.append(mess)
-            self.exportlog()
-        elif self.conf == 2: 
-            print(mess)
-            self.filelog.append(mess)
-        else:
-            pass
-            
-    def printlog(self, full=False):
-        if self.conf in [0,1,2]:
-            if full == True:
-                dst_log = self.hist_filelog
-            else:
-                dst_log = self.filelog
-            try:
-                print('|----------------------|')
-                for line in dst_log:
-                    print(line)
-                print('-----| FIM DE LOG |-----')
-                print('|----------------------|')
-                self.filelog.append(self.defMsg_simple.format(datetime.now(), "Executado um print do log"))
-                self.exportlog()
-            except:
-                pass
-        else:
-            pass
-
-    def exportlog(self):
+    def save_log(self):
         try:
             if self.conf == 1 or self.conf == 0:
                 lfile = open(str(self.exportFile),'w')
@@ -193,10 +155,10 @@ class Tlog:
                 self._verify_len_log()
 
             
-        
-    def _treatmentMess(self, mess, call):
-        if call == '':
-            mess = self.defMsg_simple.format(datetime.now(), str(mess))
-        else:
-            mess = self.defMsg_full.format(datetime.now(), str(call), str(mess) )
-        return mess
+class TlogDB(InterfaceTlog):
+    """
+    Classe para utilziar o treglog com banco de dados.
+    """
+    def __init__(self) -> None:
+        super().__init__()
+
