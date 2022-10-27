@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 from uuid import uuid4, uuid5
 from ..Errors import TregGeneralErrors
 
@@ -13,7 +14,7 @@ class InterfaceTlog(ABC):
     """
     Interface para os modos de Tlog
     """
-    defautl_msg_full = 'Time: {} - Message: [call: {}] - {}' 
+    default_msg_full = 'Time: {} - Message: [call: {}] - {}'
     default_msg_simple = 'Time: {} - Message: {}'
     ACCEPTED_MODES = ('d', 's', 'v')  # d=debug/s=simple/v=verbose
     ACCEPTED_KEYWORDS = [
@@ -22,14 +23,15 @@ class InterfaceTlog(ABC):
         'log_name'
     ]
 
-    def __init__(self, mode_log='s', forced_replace=False, log_name=None,  **kwargs) -> None:
+    def __init__(self, **kwargs) -> None:
+        mode_log = kwargs.get('mode_log')
         if not mode_log in self.ACCEPTED_MODES:
             raise TregGeneralErrors.TlogErrorParameterValue(
-                f'Parâmetro "mdoe_log" incorreto.\nSão aceitos apenas os valores: {self.ACCEPTED_MODES}.'
+                f'Parâmetro "mode_log" incorreto.\nSão aceitos apenas os valores: {self.ACCEPTED_MODES}.'
             )
-        
+        log_name = kwargs.get('log_name')
         self._id_exec = uuid4()
-        self.log_name = 'Tlog' if log_name == None else log_name
+        self.log_name = 'Tlog' if log_name is None else log_name
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} (name = {self.log_name}, id={self._id_exec})'
@@ -70,10 +72,13 @@ class InterfaceTlog(ABC):
     @abstractmethod
     def m_debug(self, mess: str, call: str = '') -> None:
         pass
-        
-    @abstractmethod
+
     def _treatment_message(self, mess, call):
-        pass
+        if call == '':
+            mess = self.default_msg_simple.format(datetime.now(), str(mess))
+        else:
+            mess = self.default_msg_full.format(datetime.now(), str(call), str(mess))
+        return mess
 
     @abstractmethod
     def save_log(self) -> None:
